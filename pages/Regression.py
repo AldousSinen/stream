@@ -111,15 +111,6 @@ if uploaded_file is not None:
     else:
         st.error("Model training failed. Check the dataset for invalid values in 'Default'.")
 
-    # Scatter Plot
-    st.write("### Scatter Plot: Loan Disbursed vs. Loan Balance")
-    fig, ax = plt.subplots()
-    sns.scatterplot(x=df['lnDisbursed'], y=df['lnBalance'], hue=df['Default'], alpha=0.6, ax=ax)
-    ax.set_xlabel("Loan Disbursed")
-    ax.set_ylabel("Remaining Balance")
-    ax.set_title("Loan Disbursed vs. Balance")
-    st.pyplot(fig)
-
     # Histogram
     st.write("### Loan Repayment Percentage Distribution")
     fig, ax = plt.subplots()
@@ -127,7 +118,7 @@ if uploaded_file is not None:
     ax.set_xlabel("Repayment Percentage")
     ax.set_title("Histogram of Loan Repayment Percentage")
     st.pyplot(fig)
-    
+
     # Financial Literacy & Insurance
     st.write('### Financial Literacy Assessment')
     st.dataframe(financial_literacy_assessment(df))
