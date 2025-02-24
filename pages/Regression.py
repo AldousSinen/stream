@@ -91,7 +91,7 @@ if uploaded_file is not None:
     df = load_data(uploaded_file)
     df = preprocess_data(df)
     st.write('### Sample Data')
-    st.dataframe(df.head())
+    st.dataframe(df)
     
     # Data Visualization
     st.write('### Loan Distribution')
@@ -119,10 +119,16 @@ if uploaded_file is not None:
     ax.set_title("Histogram of Loan Repayment Percentage")
     st.pyplot(fig)
 
-    # Financial Literacy & Insurance
-    st.write('### Financial Literacy Assessment')
-    st.dataframe(financial_literacy_assessment(df))
-    
-    st.write('### Insurance Recommendations')
-    st.dataframe(insurance_recommendation(df))
-        
+    # **Probability Distribution Plot (KDE)**
+    st.write("### Probability Distribution of Key Financial Features")
+    numeric_columns = ["lnDisbursed", "lnBalance", "loan_pledge_amt", "Percentage"]
+
+    for col in numeric_columns:
+        fig, ax = plt.subplots()
+        sns.kdeplot(df[df['Default'] == 0][col], fill=True, label='Paid', color='green', ax=ax)
+        sns.kdeplot(df[df['Default'] == 1][col], fill=True, label='Defaulted', color='red', ax=ax)
+        ax.set_title(f"Probability Distribution of {col}")
+        ax.set_xlabel(col)
+        ax.legend()
+        st.pyplot(fig)
+
