@@ -100,3 +100,5 @@ if uploaded_file is not None:
     
     st.write('### Financial Literacy Assessment (Grouped by Client)')
     st.dataframe(financial_literacy_assessment(df))
+
+
