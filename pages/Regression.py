@@ -57,7 +57,12 @@ def financial_literacy_assessment(df):
             return 'Low Risk'
     
     grouped_df['Risk Score'] = grouped_df['avg_percentage'].apply(classify_risk)
-    return grouped_df[['clientName', 'avg_percentage', 'total_loans', 'business_loans', 'Risk Score']]
+
+    # Count clients per risk classification and enforce order
+    risk_summary = grouped_df['Risk Score'].value_counts().reindex(['High Risk', 'Medium Risk', 'Low Risk'], fill_value=0).reset_index()
+    risk_summary.columns = ['Risk Score', 'Total Clients']
+
+    return grouped_df[['clientName', 'avg_percentage', 'total_loans', 'business_loans', 'Risk Score']], risk_summary
 
 st.title('Loan Repayment Prediction & Financial Analysis')
 uploaded_file = st.file_uploader('Upload CSV File', type=['csv'])
@@ -99,6 +104,10 @@ if uploaded_file is not None:
         st.error("Model training failed. Check dataset.")
     
     st.write('### Financial Literacy Assessment (Grouped by Client)')
-    st.dataframe(financial_literacy_assessment(df))
-
+    client_risk, risk_summary = financial_literacy_assessment(df)
+    st.dataframe(client_risk)
+    
+    st.write('### Total Clients per Risk Classification')
+    st.dataframe(risk_summary)
+    
 
