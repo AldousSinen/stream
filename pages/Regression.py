@@ -96,7 +96,13 @@ if uploaded_file is not None:
     ax.set_xlabel("Loan Disbursed")
     ax.set_title("Probability Distribution of Loan Amount")
     st.pyplot(fig)
-    
+
+    st.write("### Correlation Heatmap")
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.heatmap(df[['lnDisbursed', 'lnBalance', 'term', 'loan_pledge_amt', 'Percentage', 'Default']].corr(), annot=True,
+                cmap='coolwarm', ax=ax)
+    st.pyplot(fig)
+
     model, scaler, accuracy = train_model(df)
     if accuracy is not None:
         st.write(f'### Model Accuracy: {accuracy * 100:.2f}%')
