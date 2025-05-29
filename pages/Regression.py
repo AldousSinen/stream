@@ -99,9 +99,26 @@ if uploaded_file is not None:
 
     st.write("### Correlation Heatmap")
     fig, ax = plt.subplots(figsize=(10, 6))
-    sns.heatmap(df[['lnDisbursed', 'lnBalance', 'term', 'loan_pledge_amt', 'Percentage', 'Default']].corr(), annot=True,
-                cmap='coolwarm', ax=ax)
+    sns.heatmap(df[['lnDisbursed', 'lnBalance', 'term', 'loan_pledge_amt', 'Percentage', 'Default']].corr(),
+                annot=True, cmap='coolwarm', ax=ax, cbar=True)
+    cbar = ax.collections[0].colorbar
+    cbar.set_label('Correlation Coefficient', rotation=270, labelpad=15)
     st.pyplot(fig)
+
+    # Add legend/explanation for correlation values
+    st.markdown("""
+    **Correlation Coefficient Legend:**
+
+    - **+1.0**: Perfect positive correlation (variables move together perfectly)
+    - **+0.7 to +0.9**: Strong positive correlation
+    - **+0.4 to +0.6**: Moderate positive correlation
+    - **+0.1 to +0.3**: Weak positive correlation
+    - **0**: No correlation
+    - **-0.1 to -0.3**: Weak negative correlation
+    - **-0.4 to -0.6**: Moderate negative correlation
+    - **-0.7 to -0.9**: Strong negative correlation
+    - **-1.0**: Perfect negative correlation (variables move in exact opposite directions)
+    """)
 
     model, scaler, accuracy = train_model(df)
     if accuracy is not None:
